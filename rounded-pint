@@ -1,23 +1,25 @@
-function preload() {
-  img = loadImage('assets/laDefense.jpg');
+/*function preload() {
+  img = loadImage('8bitHero.jpg');
 }
+*/
 
 function setup() {
   createCanvas(600, 400);
-  background(240, 165, 198);
+  start();
   
 }
 
 function draw() {
-  
-  
-  start();
+
   startButtonPress();
+  escape();
   
   
 }
 
 function start () {
+  
+  background(240, 165, 198);
   textSize(75);
   fill('black');
   text('FingerFun', 130, 90);
@@ -63,5 +65,12 @@ function startScreen() {
 
 function monsterMania () {
   background(140, 250, 158);
+  text('Monster Mania', 20,20,20)
   
+}
+
+function escape () {
+  if (keyIsPressed == true && keyCode == ESCAPE) {
+    start();
+  }
 }
