@@ -1,0 +1,100 @@
+/*function preload() {
+  img = loadImage('8bitHero.jpg');
+}
+*/
+
+let screenNum = 0;
+
+function setup() {
+  createCanvas(600, 400);
+  
+}
+
+function draw() {
+  
+  screenSelect();
+  startButtonPress();
+  escape();
+  
+  
+}
+
+function start () {
+  
+  background(240, 165, 198);
+  textSize(75);
+  fill('black');
+  text('FingerFun', 130, 90);
+  
+  //start button
+  fill('light grey');
+  let startButton = rect(110,140,380, 80);
+  
+  fill('black');
+  textSize(50);
+  text('Start', 240, 195)
+  
+  //quit button
+  fill(181, 62, 115);
+  rect(135,240,330, 48);
+  
+  fill('black');
+  textSize(40);
+  text('Quit', 260, 277)
+  
+  //settings button
+  fill(181, 62, 115);
+  rect(135,310,330, 48);
+  
+  fill('black');
+  textSize(40);
+  text('Settings', 226, 346)
+  
+}
+
+function startButtonPress () {
+  if (mouseIsPressed && mouseX > 110 && mouseX < 490 && mouseY > 140 && mouseY < 220) {
+    screenNum = 2;
+   }
+}
+
+
+function monsterMania () {
+  background(140, 250, 158);
+  text('Monster Mania', 20,20,20)
+  
+}
+
+function escape () {
+  if (keyIsPressed == true && keyCode == ESCAPE) {
+    screenNum = 0;
+  }
+}
+
+function nextGame () {
+  if (keyIsPressed == true && keyCode == RIGHT_ARROW) {
+    screenNum += 1;
+  }
+}
+
+function screenSelect () {
+  if (screenNum == 0){
+    start();
+  }
+  else if (screenNum == 1){
+    gameSelect();
+  }
+  else if (screenNum == 2){
+    monsterMania();
+  }
+  else if (screenNum == 3){
+    ratRunner();
+  }
+  else if (screenNum == 4){
+    squirrelSmash();
+  }
+  else if (screenNum == 5){
+    victory();
+  }
+  
+}
