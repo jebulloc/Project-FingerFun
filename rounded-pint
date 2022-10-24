@@ -11,7 +11,6 @@ function setup() {
 
 function draw() {
   screenSelect();
-  startButtonPress();
   escape();
   
 }
@@ -45,6 +44,9 @@ function start() {
   fill("black");
   textSize(40);
   text("Settings", 226, 346);
+  
+  startButtonPress();
+  nextGame();
 }
 
 //-------------------Games------------------------------
@@ -76,13 +78,21 @@ function gameSelect() {
   textSize(75);
   fill("black");
   text("Game Select", 80, 90);
-  
+    
   mbutton = button('small', 'Monster Mania', 'green', 133, 36, 130);
- rbutton = button('small', 'Rat Runner', 'grey', 133, 63, 210);
+  rbutton = button('small', 'Rat Runner', 'grey', 133, 63, 210);
   sbutton =button('small', 'Squirrel Smash', 'orange', 133, 30, 290);
   
   if (mouseX > 133 && mouseX < 133+330 && mouseY > 130 && mouseY < 130+48 && mouseIsPressed == true){
     screenNum = 2;
+  }
+  
+  if (mouseX > 133 && mouseX < 133+330 && mouseY > 210 && mouseY < 210+48 && mouseIsPressed == true){
+    screenNum = 3;
+  }
+  
+  if (mouseX > 133 && mouseX < 133+330 && mouseY > 290 && mouseY < 290+48 && mouseIsPressed == true){
+    screenNum = 4;
   }
 
 }
@@ -94,27 +104,22 @@ function escape() {
 }
 
 // Shit dont fuckin work
-/*function nextGame() {
+function nextGame() {
   if (keyIsPressed == true && keyCode == RIGHT_ARROW) {
     if (screenNum == 0) {
       screenNum = 1;
-      delay(2);
     } else if (screenNum == 1) {
       screenNum = 2;
-      delay(2);
     } else if (screenNum == 2) {
       screenNum = 3;
-      delay(2);
     } else if (screenNum == 3) {
       screenNum = 4;
-      delay(2);
     } else if (screenNum == 4) {
       screenNum = 5;
-      delay(2);
     }
   }
 }
-*/
+
 
 function startButtonPress() {
   if (
@@ -154,3 +159,4 @@ function button (size, words, color, x, textX, y) {
     text(words, textX+x, y+37);
   }
 }
+
