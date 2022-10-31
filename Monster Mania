@@ -1,0 +1,30 @@
+let x = 100;
+let y = 200;
+let charSpeed = 4;
+
+function setup() {
+  createCanvas(600, 400);
+}
+
+function draw() {
+  background(220);
+  fill("red");
+  rect(x, y, 30);
+  
+  keyPressed();
+}
+
+function keyPressed() {
+  if(keyIsDown(UP_ARROW) && y > 0) {
+    y -= charSpeed;
+  }
+  if(keyIsDown(DOWN_ARROW) && y < 370) {
+    y += charSpeed;
+  }
+  if(keyIsDown(RIGHT_ARROW) && x < 200) {
+    x += charSpeed;
+  }
+  if(keyIsDown(LEFT_ARROW) && x > 0) {
+    x -= charSpeed;
+  }
+}
