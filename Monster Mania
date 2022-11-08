@@ -1,30 +1,424 @@
-let x = 100;
-let y = 200;
-let charSpeed = 4;
+var img;
+function preload() {
+  imgHero = loadImage("8bitHero.jpg");
+  imgHero2 = loadImage("8bitHero2.jpg");
+  imgDoge = loadImage("doge.png");
+  imgCrown = loadImage("crown.jpg");
+}
+
+titleTextSize = 75;
+titleChange = 0.5;
+
+//monsterMania
+yHero = 195;
+xHero = 55;
+xDoge = 600;
+yDoge = 70;
+yDogeChange = 200;
+yDoge2 = yDoge + yDogeChange;
+mmLifeVal = 3;
+mmScorVal = 0;
+
+victoryVal = 0;
+
+
+firstTime = 0;
+secondTime = 0;
+
+mSelect = false;
+rSelect = false;
+sSelect = false;
+
+let screenNum = 0.0;
 
 function setup() {
   createCanvas(600, 400);
+  
 }
 
 function draw() {
-  background(220);
-  fill("red");
-  rect(x, y, 30);
+  screenSelect();
+  escape();
+
   
-  keyPressed();
 }
 
-function keyPressed() {
-  if(keyIsDown(UP_ARROW) && y > 0) {
-    y -= charSpeed;
+
+
+//-------------------Games------------------------------
+
+function monsterMania() {
+  
+  background(140, 250, 158);
+  textSize(40);
+  text("Monster Mania", 170, 7, 320);
+  //text('Press Escape to return to Start screen', 300, 20, 30)
+  
+  textSize(30);
+  scoreY = 30;
+  scoreX = 10;
+  text('Score: ', scoreX, scoreY);
+  text(str(mmScorVal), scoreX+100, scoreY+1);
+  
+  lifeY = 30;
+  lifeX = 470;
+  text('Lives: ', lifeX, lifeY);
+  text(str(mmLifeVal), lifeX+100, scoreY+1);
+  
+  //hero
+  
+  if (keyIsPressed == true) {
+    if (keyCode === UP_ARROW && yHero >= 0) {
+      yHero -= 4;
+    }
+    if (keyCode === DOWN_ARROW && yHero <= 320) {
+      yHero += 4;
+    }
   }
-  if(keyIsDown(DOWN_ARROW) && y < 370) {
-    y += charSpeed;
+  image(imgHero, xHero, yHero, 80, 80);
+  
+  heroCenterX = (xHero + 40);
+  heroCenterY = (yHero + 40);
+  dogeCenterX = (xDoge + 40);
+  dogeCenterY = (yDoge + 40);
+  dogeCenterY2 = (yDoge2 + 40);
+  
+  if ((abs(dogeCenterX - heroCenterX) < 80) && (abs(heroCenterY - dogeCenterY) < 80)) {
+    secondTime = millis();
+    if ((secondTime - firstTime) > 1000) {
+      mmLifeVal -= 1;
+      firstTime = millis();
+      background(255, 33, 52);
+    }
+  } 
+  
+  if ((abs(dogeCenterX - heroCenterX) < 80) && (abs(heroCenterY - dogeCenterY2) < 80)) {
+    secondTime = millis();
+    if ((secondTime - firstTime) > 1000) {
+      mmLifeVal -= 1;
+      firstTime = millis();
+      background(255, 33, 52);
+    }
+    
+  } 
+  
+  if (mmScorVal == 15) {
+    victoryVal = 1;
+    screenNum = 5;
   }
-  if(keyIsDown(RIGHT_ARROW) && x < 200) {
-    x += charSpeed;
+  
+  if (mmLifeVal <= 0) {
+    screenNum = 6;
   }
-  if(keyIsDown(LEFT_ARROW) && x > 0) {
-    x -= charSpeed;
+  
+  //monster
+  
+  monster(xDoge,yDoge); 
+  monster(xDoge,yDoge2);
+  xDoge -= 2 + (mmScorVal * 0.53);
+  
+  if (xDoge <= -100) {
+    yDoge = random(-100,200);
+    xDoge = 615;
+    xDogeChange = random(180, 280);
+    mmScorVal += 1;
   }
+  
+  
+}
+
+function ratRunner() {
+  background(163, 163, 163);
+  text("Rat Runner", 20, 20, 20);
+  text('Press Escape to return to Start screen', 300, 20, 30)
+  
+  //maze
+  fill('black')
+  rect()
+}
+
+function squirrelSmash() {
+  background(171, 129, 79);
+  text("Squirrel Smash", 20, 20, 20);
+  text('Press Escape to return to Start screen', 300, 20, 30)
+
+}
+
+
+//------------------GUI----------------------------------
+
+function gameSelect() {
+  
+  background(240, 165, 198);
+  textSize(75);
+  fill("black");
+  text("Game Select", 80, 90);
+  
+//----------------------game buttons
+  strokeWeight(5); 
+  
+  
+  
+//-------------monster mania
+  if (mSelect == true) {
+    stroke('white');
+  }
+  else {
+    stroke('black');
+  }
+  mbutton = button('small', 'Monster Mania', 'green', 133, 36, 130);
+  
+  
+    
+//--------------rat runner
+  if (rSelect == true) {
+    stroke('white');
+  }
+  else {
+    stroke('black');
+  }
+  rbutton = button('small', 'Rat Runner', 'grey', 133, 63, 210);
+  
+// ----------squirrel smash
+  if (sSelect == true) {
+    stroke('white');
+  }
+  else {
+    stroke('black');
+  }
+  sbutton =button('small', 'Squirrel Smash', 'orange', 133, 30, 290);
+  
+  //select
+  
+  stroke('black');
+  
+  if (mouseIsPressed == true) {
+    secondTime = millis();
+  }
+  
+  if ((secondTime - firstTime) > 500) {
+    
+  if (mouseX > 133 && mouseX < 133+330 && mouseY > 130 && mouseY < 130+48 && mouseIsPressed == true){
+    
+    secondTime = millis();
+    if ((secondTime - firstTime) > 300) {
+      if (mSelect == false){
+      mSelect = true;
+      rSelect = false;
+      sSelect = false;
+    }
+    else if (mSelect == true){
+      mSelect = false;
+    }
+      firstTime = millis();
+    }
+       
+  }
+  
+  if (mouseX > 133 && mouseX < 133+330 && mouseY > 210 && mouseY < 210+48 && mouseIsPressed == true){
+    secondTime = millis();
+    if ((secondTime - firstTime) > 300) {
+      if (rSelect == false){
+      rSelect = true;
+      mSelect = false;
+      sSelect = false;
+    }
+    else if (rSelect == true){
+      rSelect = false;
+    }
+      firstTime = millis();
+    }
+    
+  }
+  
+  if (mouseX > 133 && mouseX < 133+330 && mouseY > 290 && mouseY < 290+48 && mouseIsPressed == true){
+    
+    secondTime = millis();
+    if ((secondTime - firstTime) > 300) {
+      if (sSelect == false){
+      sSelect = true;
+      mSelect = false;
+      rSelect = false;
+    }
+    else if (sSelect == true){
+      sSelect = false;
+    }
+      firstTime = millis();
+    }
+  }
+  }
+  
+  strokeWeight(1);
+  fill('light grey');
+  square(525, 325, 65);
+  fill('black');
+  text('Go!', 525, 370);
+
+  //go button
+  
+  if (mouseX > 525 && mouseX < 525+65 && mouseY > 325 && mouseY < 325+65 && mouseIsPressed == true){
+    if (mSelect == true) {
+      screenNum = 2;
+    }
+    if (rSelect == true) {
+      screenNum = 3;
+    }
+    if (sSelect == true) {
+      screenNum = 4;
+    }
+  }
+  
+}
+
+function escape() {
+  if (keyIsPressed == true && keyCode == ESCAPE) {
+    mSelect = false;
+    rSelect = false;
+    sSelect = false;
+    strokeWeight(1);
+    screenNum = 0;
+    imageMode(CORNER);
+    
+    mmScorVal = 0;
+    mmLifeVal = 3;
+    yHero = 195;
+    xHero = 55;
+    xDoge = 600;
+    yDoge = 70;
+  }  
+}
+
+
+function start() {
+  
+  background(240, 165, 198);
+  textSize(titleTextSize);
+  fill("black");
+  textAlign(CENTER);
+  text("FingerFun", 300, 100);
+  
+  titleTextSize += titleChange;
+  if (titleTextSize >= 95) {
+    titleChange *= -1;
+  }
+  if (titleTextSize <= 44) {
+    titleChange *= -1;
+  }
+  
+  textAlign(LEFT);
+  
+  //start button
+  fill("light grey");
+  let startButton = rect(110, 140, 380, 80);
+
+  fill("black");
+  textSize(50);
+  text("Start", 240, 195);
+
+  //quit button
+  fill(181, 62, 115);
+  rect(135, 240, 330, 48);
+
+  fill("black");
+  textSize(40);
+  text("Quit", 260, 277);
+
+  //settings button
+  fill(181, 62, 115);
+  rect(135, 310, 330, 48);
+
+  fill("black");
+  textSize(40);
+  text("Settings", 226, 346);
+  
+  startButtonPress();
+}
+
+function startButtonPress() {
+  if (
+    mouseIsPressed &&
+    mouseX > 110 &&
+    mouseX < 490 &&
+    mouseY > 140 &&
+    mouseY < 220
+  ) {
+    firstTime = millis();
+    screenNum = 1;
+  }
+}
+
+function error() {
+  background('white');
+  fill('black');
+  textSize(15);
+  text('ERROR', 40, 40);
+}
+
+function loser() {
+  background(191, 38, 38);
+  textSize(75);
+  fill(255, 255, 255);
+  text("GAME OVER", 82, 90);
+  
+  textSize(30);
+  fill('black');
+  textWidth(500);
+  text('Press Escape to return to Start screen', 50, 300, 600)
+}
+
+function victory(x) {
+  background(240, 200, 22);
+  textSize(75);
+  fill(random(255), random(255), random(255));
+  text("VICTORY!", 130, 90);
+  
+  textSize(30);
+  fill('black');
+  text('Press Escape to return to Start screen', 50, 300, 600)
+  
+  if (x == 1) {
+    imageMode(CENTER);
+    image(imgHero2, 295, 180, 100, 120);
+  }
+  
+  imageMode(CORNER);
+  image(imgCrown, 50, 100, 80, 80);
+  image(imgCrown, 470, 100, 80, 80);
+  
+}
+
+function screenSelect() {
+  if (screenNum == 0) {
+    start();
+  } else if (screenNum == 1) {
+    gameSelect();
+  } else if (screenNum == 2) {
+    monsterMania();
+  } else if (screenNum == 3) {
+    ratRunner();
+  } else if (screenNum == 4) {
+    squirrelSmash();
+  } else if (screenNum == 5) {
+    victory(victoryVal);
+  } else if (screenNum == 6) {
+    loser();
+  } else if (screenNum == 7) {
+    error();
+  }
+}
+
+function button (size, words, color, x, textX, y) {
+  if (size == 'small'){
+    fill(color);
+    rect(x, y, 330, 48);
+    
+    fill("white");
+    textSize(40);
+    text(words, textX+x, y+37);
+  }
+}
+
+// monster mania monsters
+function monster (x, y) {
+  image(imgDoge, (x), (y), 80, 80);
 }
